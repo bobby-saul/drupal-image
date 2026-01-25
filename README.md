@@ -7,10 +7,11 @@ easier development.
 
 ## Drupal version
 
+Currently installing Drupal version 11.3.2.
 
 ## Php version
 
-Currently, running 8.4 for Drupal 10 - 11.3 support.
+Currently using PHP version 8.4 for Drupal 10 - 11.3 support.
 
 ## Php extensions
 

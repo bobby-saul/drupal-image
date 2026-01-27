@@ -2,6 +2,10 @@
 FROM php:8.4-apache
 # Enable rewrite
 RUN a2enmod rewrite
+# Update the apache config.
+COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
+# Add php.ini options for Drupal.
+COPY ./drupal-options.ini /usr/local/etc/php/conf.d/drupal-options.ini
 # Install git (for composer) and packages for php extensions
 # https://www.drupal.org/docs/getting-started/system-requirements/php-requirements#extensions
 RUN apt update && apt install -y \
@@ -9,9 +13,15 @@ RUN apt update && apt install -y \
   libfreetype6-dev \
   libjpeg62-turbo-dev \
   libpng-dev \
+  libwebp-dev \
+  libavif-dev \
   libzip-dev \
   libpq-dev \
-  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
+    --with-avif \
   && docker-php-ext-install -j$(nproc) \
   gd \
   opcache \
@@ -20,12 +30,12 @@ RUN apt update && apt install -y \
   zip \
   pdo_pgsql \
   pgsql \
+  && pecl install uploadprogress \
+  && docker-php-ext-enable uploadprogress \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 # Install drupal
 RUN cd /var/www && \
   composer create-project drupal/recommended-project:11.3.2 drupal && \
-  rm -rf html && \
-  ln -sf drupal/web/ html \
-  && chown -R www-data:www-data drupal/web/
+  chown -R www-data:www-data /var/www

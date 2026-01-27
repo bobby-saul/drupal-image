@@ -31,6 +31,8 @@ Drupal required:
   - GD library
     - libfreetype6-dev installed.
     - libjpeg62-turbo-dev installed.
+    - libwebp-dev installed.
+    - libavif-dev installed.
     - libpng-dev installed.
     - gd configured.
     - gd enabled.
@@ -45,6 +47,9 @@ Drupal recommended:
 - Zip
   - libzip-dev installed.
   - zip enabled.
+- uploadprogress
+  - pecl install uploadprogress
+  - docker-php-ext-enable uploadprogress
 
 ## Composer
 

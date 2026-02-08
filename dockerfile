@@ -39,3 +39,4 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN cd /var/www && \
   composer create-project drupal/recommended-project:11.3.2 drupal && \
   chown -R www-data:www-data /var/www
+WORKDIR /var/www/drupal
